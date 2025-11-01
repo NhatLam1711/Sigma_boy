@@ -1,4 +1,4 @@
-# SEAL HACKATHON - Testing, Execution, and Reporting App
+# Sigma Boy - Testing, Execution, and Reporting App
 
 ---
 
