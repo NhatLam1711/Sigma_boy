@@ -1,0 +1,617 @@
+/* color palette (light theme like screenshot) */
+:root {
+  --page-bg: #fafafa;
+  --sidebar-bg: #f5f3fb; /* pale lavender */
+  --panel-bg: #ffffff; /* white card */
+  --brand-pink: #e91e63; /* magenta/pink */
+  --muted: #9aa0a6;
+  --user-green: #e6f6e8;
+  --user-green-text: #05402a;
+  --bot-gray: #f2f2f2;
+  --card-border: #ececec;
+}
+
+/* page bg */
+body, .app-root {
+  background: var(--page-bg);
+  color: #222;
+  min-height: 100vh;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ensure app root fills viewport and topbar fixed */
+.app-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* fix topbar to top */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px; /* kept in sync with calculations below */
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  background: rgba(15,15,16,0.85);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* app (below topbar) should fill remaining height */
+.app {
+  display: flex;
+  height: calc(100vh - 56px); /* subtract topbar height */
+  margin-top: 56px; /* avoid content under fixed topbar */
+  overflow: hidden;
+}
+
+/* Top bar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 28px;
+  background: transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo-wrap {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+}
+.logo-svg { display: block; }
+.logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 8px; /* optional, remove if not wanted */
+  display: inline-block;
+}
+.brand {
+  color: var(--brand-pink);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+
+/* header buttons */
+.topbar-right { display:flex; gap:10px; align-items:center; }
+.btn-ghost {
+  background: transparent;
+  color: #000000;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+.btn-primary {
+  background: #fff;
+  color: #000;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* Layout */
+.app {
+  display: flex;
+  height: calc(100vh - 56px);
+  margin-top: 56px; /* avoid content under fixed topbar */
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--sidebar-bg);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.new-chat {
+  /* enhanced card-like button */
+  width: 100%;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
+  color: #000;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* fallback for older browsers */
+
+  /* visible border and subtle shadow */
+  border: 1.5px solid var(--card-border, #ececec);
+  box-shadow: 0 4px 10px rgba(20,20,20,0.04);
+
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+/* hover / focus states */
+.new-chat:hover,
+.new-chat:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(20,20,20,0.08);
+  border-color: rgba(233,30,99,0.25); /* subtle accent on hover */
+  outline: none;
+}
+
+/* active/pressed visual */
+.new-chat:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(20,20,20,0.06);
+}
+
+/* chat history */
+.chat-history {
+	/* ...existing code... */
+	/* ensure items have spacing and the container has padding */
+	padding: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	overflow-y: auto;
+}
+
+/* Replace simple .chat-item with card-like appearance moved to row */
+.chat-item-row {
+	/* card / border style moved here so menu button is inside card area */
+	padding: 10px 12px;
+	cursor: pointer;
+	border-radius: 10px;
+	color: #000000;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	position: relative; /* ensure absolute dropdown positions relative to row */
+
+	background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
+	border: 1px solid var(--card-border, #ececec);
+	box-shadow: 0 4px 12px rgba(20,20,20,0.04);
+
+	overflow: visible; /* allow dropdown to escape row bounds */
+}
+
+/* keep chat-item as plain content inside the row */
+.chat-item-row .chat-item {
+	padding: 0; /* remove card padding from inner element */
+	margin: 0;
+	flex: 1 1 auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	background: transparent; /* ensure no separate background */
+}
+
+/* Hover: subtle lift and darker border on entire row */
+.chat-item-row:hover {
+	transform: translateY(-2px);
+	transition: transform 0.12s ease, box-shadow 0.12s ease;
+	box-shadow: 0 8px 20px rgba(20,20,20,0.06);
+	border-color: rgba(0,0,0,0.06);
+}
+
+/* Active / selected chat: accent border and stronger bg on row */
+.chat-item-row.active-row {
+	background: linear-gradient(180deg, #fff, #fff);
+	border: 1px solid var(--brand-pink, #e91e63);
+	box-shadow: 0 10px 30px rgba(233,30,99,0.08);
+	color: var(--brand-pink, #e91e63);
+}
+
+/* Main */
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center; /* đảm bảo hero giữa màn hình */
+  justify-content: center; /* căn giữa theo cả 2 trục */
+  position: relative;
+  padding: 28px; /* tăng nhẹ khoảng cách ngoài để khung chat cân đối trong màn */
+  overflow: hidden;
+}
+
+/* HERO / center prompt when no chat selected */
+.hero {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+}
+.hero-title {
+  color: var(--brand-pink);
+  font-weight: 700;
+  font-size: 34px;
+  margin-bottom: 28px;
+}
+.hero-box {
+  width: 100%;
+  max-width: 760px; /* pill width */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #2a2a2b;
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+}
+.hero-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.02);
+  padding: 12px; /* giảm nhẹ để phù hợp với nút */
+  border-radius: 28px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+}
+
+/* input fills available space inside pill */
+.hero-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #dfe0e3;
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+/* visible send button with icon */
+.hero-send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand-pink);
+  color: #fff;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(233,30,99,0.18);
+}
+
+/* SVG inside button uses currentColor */
+.hero-send svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  color: inherit;
+}
+
+/* remove/hide old voice-btn if present */
+.voice-btn {
+  display: none;
+}
+
+/* chips row below input */
+.hero-chips {
+  display: flex;
+  justify-content: center;
+}
+.chips {
+  display: flex;
+  gap: 8px;
+}
+.chip {
+  background: rgba(255,255,255,0.03);
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* center chat as a card */
+.chat-container {
+  background: var(--panel-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 30px rgba(20,20,20,0.06);
+  /* make chat wider and more balanced on desktop */
+  width: 65vw;
+  min-width: 420px;
+  max-width: 1100px;
+  height: 78vh; /* slightly taller for better balance */
+  overflow: hidden;
+  border-radius: 12px;
+  /* enhance visual centering */
+  margin: 0 auto;
+}
+
+/* chat messages area */
+.messages {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  /* reduce horizontal padding but keep vertical spacing */
+  padding: 16px 18px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.message {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 6px;
+  /* keep content width flexible */
+  width: 100%;
+  box-sizing: border-box;
+}
+.message.bot-message {
+  justify-content: flex-start;
+}
+.message.user-message {
+  justify-content: flex-end;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+  color: #fff;
+  background: transparent;
+}
+.avatar.bot-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.message-content {
+  display: inline-block;
+  max-width: calc(100% - 120px);
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #e9e9eb;
+  background: rgba(255,255,255,0.02);
+  line-height: 1.5;
+  word-break: break-word;
+}
+.message.bot-message .message-content {
+  background: var(--bot-gray);
+  color: #111;
+  border-radius: 12px;
+  padding: 8px 10px;
+  max-width: calc(100% - 120px);
+}
+.message.user-message .message-content {
+  background: var(--user-green);
+  color: var(--user-green-text);
+  border-radius: 12px;
+  padding: 8px 10px;
+  max-width: calc(100% - 120px);
+}
+.message.typing .message-content {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* input area */
+.input-container {
+  background: transparent;
+  border-top: 1px solid var(--card-border);
+  padding: 12px 20px;
+  /* keep it pinned to bottom of chat-container */
+}
+.input-form {
+  max-width: calc(100% - 60px);
+  margin: 0 30px;
+  position: relative;
+}
+
+/* form row inside chat input: textarea + send button inline */
+.input-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+/* textarea expands to fill available space */
+.input-row textarea,
+.input-row .hero-input {
+	flex: 1;
+	width: 100%;
+	min-height: 44px;
+	resize: none;
+	padding: 10px 14px;
+	border-radius: 8px;
+	border: 1px solid var(--card-border);
+	background: #fff;
+	color: #222;
+	box-sizing: border-box;
+}
+
+/* send button positioned inline at the end of input row */
+.send-button {
+	position: static; /* remove absolute */
+	background: var(--brand-pink);
+	color: #fff;
+	border: none;
+	padding: 10px 12px;
+	border-radius: 10px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 6px 18px rgba(233,30,99,0.18);
+}
+
+/* svg sizing inside send button */
+.send-button svg {
+	width: 18px;
+	height: 18px;
+	color: inherit;
+}
+
+/* ensure input-container padding aligns with new form layout */
+.input-container {
+	padding: 12px 20px;
+	border-top: 1px solid var(--card-border);
+}
+
+/* responsive tweak: reduce gaps on small screens */
+@media (max-width: 880px) {
+	.input-row { gap: 6px; }
+	.send-button { padding: 8px 10px; }
+	.input-form { margin: 0 12px; max-width: calc(100% - 24px); }
+}
+
+/* responsive: on narrow screens keep previous behavior */
+@media (max-width: 1200px) {
+  .chat-container {
+    width: 86vw;
+    max-width: 920px;
+    height: 78vh;
+  }
+}
+
+@media (max-width: 880px) {
+  .chat-container {
+    width: 96vw;
+    height: 80vh;
+    margin: 0 8px;
+  }
+}
+
+/* chat item row (item + menu) */
+.chat-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  position: relative;
+}
+
+/* keep chat-item full width inside row */
+.chat-item-row .chat-item {
+  flex: 1 1 auto;
+  padding-right: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* small archived badge text */
+.archived-badge {
+  color: var(--muted);
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+/* menu button */
+.menu-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  padding: 6px 8px;
+  cursor: pointer;
+  color: #333;
+  border-radius: 6px;
+  flex: 0 0 auto;
+  z-index: 45; /* keep button above the row background */
+}
+
+/* dropdown anchored to the row (no visual jump) */
+/* use fixed positioning from JS; keep high z-index to ensure top layer */
+.menu-dropdown {
+	/* position will be set inline (fixed) to avoid clipping by overflow parents */
+	position: fixed;
+	z-index: 9999 !important;
+ 	background: #fff;
+ 	border: 1px solid var(--card-border, #ececec);
+ 	box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+ 	border-radius: 8px;
+ 	min-width: 120px;
+ 	display: flex;
+ 	flex-direction: column;
+ 	padding: 6px;
+}
+.menu-action {
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #111;
+  border-radius: 6px;
+}
+.menu-action:hover { background: rgba(0,0,0,0.03); }
+.menu-action.danger { color: #c62828; }
+
+/* confirm modal overlay */
+.confirm-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+/* confirm box */
+.confirm-box {
+  background: #fff;
+  color: #111;
+  padding: 18px;
+  border-radius: 10px;
+  width: 320px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  text-align: center;
+}
+.confirm-text {
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.confirm-actions .btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--card-border, #ececec);
+  background: var(--brand-pink, #e91e63);
+  color: #fff;
+  cursor: pointer;
+}
+.confirm-actions .btn.ghost {
+  background: transparent;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+/* ensure dropdown / modal render on sidebar theme */
+@media (max-width: 880px) {
+  .menu-dropdown { right: 8px; top: 44px; }
+}
